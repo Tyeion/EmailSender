@@ -1,14 +1,14 @@
 package com.EmailSender.EmailSender;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/contact")
 public class ContactController {
 
     private final EmailService emailService;
@@ -26,32 +26,30 @@ public class ContactController {
     }
 
     // Handle form submission
-    @PostMapping("/contact")
-    public String submitForm(@ModelAttribute("contactForm") ContactForm contactForm) {
-        // Build email body
-        String emailBody = String.format(
-                "Name: %s\nEmail: %s\nPhone: %s\nQuery: %s",
-                contactForm.getName(),
-                contactForm.getEmail(),
-                contactForm.getNumber(),
-                contactForm.getQuery()
-        );
+    @PostMapping("/submit")  // Added specific path
+    public ResponseEntity<String> submitForm(@RequestBody ContactForm contactForm) {
+        try {
+            String emailBody = String.format(
+                    "Name: %s\nEmail: %s\nPhone: %s\nQuery: %s",
+                    contactForm.getName(),
+                    contactForm.getEmail(),
+                    contactForm.getPhone(),  // Make sure this matches your ContactForm field
+                    contactForm.getQuery()
+            );
 
-        // Send email
-        emailService.sendEmail(
-                "your-email@gmail.com", // Your email
-                "New Contact Form Submission",
-                emailBody
-        );
+            emailService.sendEmail(
+                    "your-email@gmail.com",
+                    "New Contact Form Submission",
+                    emailBody
+            );
 
-        return "redirect:/contact/success";
+            return ResponseEntity.ok("Message sent successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to send message");
+        }
     }
 
-    // Success page
-    @GetMapping("/contact/success")
-    public String successPage() {
-        return "success";
-    }
+
 
 
 }

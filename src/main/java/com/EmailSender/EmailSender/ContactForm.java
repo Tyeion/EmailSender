@@ -5,7 +5,7 @@ package com.EmailSender.EmailSender;
 public class ContactForm {
 
     public String name ;
-    public String number ;
+    public String phone ;
     public String email;
     public String query ;
 
@@ -17,12 +17,12 @@ public class ContactForm {
         this.name = name;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void getPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
