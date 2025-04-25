@@ -1,11 +1,17 @@
-# Use Java 17
+# Use Java 17 base image
 FROM eclipse-temurin:17-jdk
 
-# Copy project files
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy project files into the container
 COPY . .
 
-# Build the JAR (Maven)
-RUN ./mvnw clean package
+# Give executable permission to the Maven wrapper script
+RUN chmod +x mvnw
 
-# Run the JAR (replace with your exact JAR name)
+# Build the application
+RUN ./mvnw clean package -DskipTests
+
+# Run the generated JAR file
 CMD ["java", "-jar", "target/EmailSender-0.0.1-SNAPSHOT.jar"]
