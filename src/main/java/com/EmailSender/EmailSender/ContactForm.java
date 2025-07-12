@@ -4,10 +4,10 @@ package com.EmailSender.EmailSender;
 
 public class ContactForm {
 
-    public String name ;
-    public String phone ;
-    public String email;
-    public String query ;
+    private String name ;
+    private String phone ;
+    private String email;
+    private String query ;
 
     public String getName() {
         return name;
